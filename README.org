@@ -1,0 +1,9 @@
+* Maven Shade EDN transformer plugin
+  
+When Clojure starts, it searches for files named 'data_readers.clj' and 'data_readers.cljc' at the root of the classpath. Each such file must contain a literal map of symbols, like this:
+
+#+begin_src clojure
+{foo/bar my.project.foo/bar foo/baz my.project/baz}
+#+end_src
+
+This is a transformer for the Maven Shade plugin that collects Clojure data readers found in dependencies during the assembly of a fat jar. All individual data readers from dependencies are assembled together and placed at the root of the current project.
