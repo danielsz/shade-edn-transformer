@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.meyvn</groupId>
+  <artifactId>shade-edn-data-readers-transformer</artifactId>
+  <version>1.0.0</version>
+
+  <name>Shade EDN data reader transformer</name>
+  <url>https://meyvn.org</url>
+  <description>Transformer for the Shade plugin that appends data readers found on the classpath</description>
+  <organization>
+    <name>Sapiens Sapiens</name>
+    <url>https://meyvn.org</url>
+  </organization>
+
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/danielsz/shade-edn-transformer/issues</url>
+  </issueManagement>
+
+  <licenses>
+    <license>
+      <name>Eclipse Public License 2.0</name>
+      <url>https://github.com/danielsz/shade-edn-transformer/blob/master/LICENSE</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <url>https://github.com/danielsz/shade-edn-transformer</url>
+    <connection>
+      scm:git:git://github.com/danielsz/shade-edn-transformer.git
+    </connection>
+    <developerConnection>
+      scm:git:ssh://git@github.com:danielsz/shade-edn-transformer.git
+    </developerConnection>
+  </scm>
+  <developers>
+    <developer>
+      <name>Daniel Szmulewicz</name>
+      <email>daniel.szmulewicz@gmail.com</email>
+      <organization>Sapiens Sapiens</organization>
+      <organizationUrl>https://meyvn.org</organizationUrl>
+    </developer>
+  </developers>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-shade-plugin</artifactId>
+      <version>3.1.1</version>
+      <type>maven-plugin</type>
+    </dependency>
+    <dependency>
+      <groupId>us.bpsm</groupId>
+      <artifactId>edn-java</artifactId>
+      <version>0.5.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-javadoc-plugin</artifactId>
+	<configuration>
+	  <javadocExecutable>/usr/bin</javadocExecutable>
+	</configuration>
+	<executions>
+	  <execution>
+	    <id>attach-javadocs</id>
+	    <goals>
+	      <goal>jar</goal>
+	    </goals>
+	  </execution>
+	</executions>
+      </plugin>
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-source-plugin</artifactId>
+	<executions>
+	  <execution>
+	    <id>attach-sources</id>
+	    <goals>
+              <goal>jar</goal>
+	    </goals>
+	  </execution>
+	</executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.6</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.12</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>oss</serverId>
+          <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+    </plugins>
+    <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+      <plugins>
+        <plugin>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>3.0.0</version>
+        </plugin>
+        <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+        <plugin>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.8.1</version>
+	  <configuration>
+            <compilerArgs>
+              <arg>-Xlint</arg>
+            </compilerArgs>
+          </configuration>
+        </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.21.0</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.2</version>
+        </plugin>
+        <plugin>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+	<plugin>
+	  <groupId>com.lewisd</groupId>
+	  <artifactId>lint-maven-plugin</artifactId>
+	  <version>0.0.8</version>
+	  <executions>
+	    <execution>
+	      <id>pom-lint</id>
+	      <phase>validate</phase>
+	      <goals>
+		<goal>check</goal>
+	      </goals>
+	    </execution>
+	  </executions>
+	</plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+  <distributionManagement>
+    <repository>
+      <id>meyvn</id>
+      <url>https://nexus.tuppu.net/repository/meyvn/</url>
+    </repository>
+  </distributionManagement>
+</project>
